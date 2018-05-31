@@ -56,8 +56,8 @@ class Dijkstra:
 
     def szukaj(self, point):
         if self.pierwsze_wykonanie:
-            self.odwiedz.append(self.naszgraf.A)
-            self.naszgraf.A.odleglosc = 0
+            self.odwiedz.append(point)
+            point.odleglosc = 0
             self.pierwsze_wykonanie = False
 
         nowe_d = []
@@ -102,21 +102,30 @@ class Dijkstra:
 
 
 
-    def run(self):
-        punkt = self.naszgraf.A
+    def run(self, start, koniec):
+
+        punkt = start
         algorytm = True
 
         while (algorytm):
             punkt = self.szukaj(punkt)
-            if punkt.nazwa == 'F':
+            if punkt.nazwa == koniec.nazwa:
                 algorytm = False
 
 
-        droga =['F']
-        ind = 5
+        droga =[koniec.nazwa]
+        if koniec.nazwa == 'A': ind = 0
+        if koniec.nazwa == 'B': ind = 1
+        if koniec.nazwa == 'C': ind = 2
+        if koniec.nazwa == 'D': ind = 3
+        if koniec.nazwa == 'E': ind = 4
+        if koniec.nazwa == 'F': ind = 5
+        if koniec.nazwa == 'G': ind = 6
+
         petla = True
         while(petla):
             droga = [self.pop[ind]] + droga
+            if droga[0] == start.nazwa: petla = False
             if self.pop[ind] == 'A': ind = 0
             elif self.pop[ind] == 'B': ind = 1
             elif self.pop[ind] == 'C': ind = 2
@@ -124,11 +133,10 @@ class Dijkstra:
             elif self.pop[ind] == 'E': ind = 4
             elif self.pop[ind] == 'F': ind = 5
             elif self.pop[ind] == 'G': ind = 6
-            if ind == 0:
-                petla = False
 
 
-        print('Najkrótsza droga z A do F wynosi ', self.naszgraf.F.odleglosc, '. Prowadzi następująco:')
+
+        print('Najkrótsza droga z ', start.nazwa,  ' do ', koniec.nazwa, ' wynosi ', koniec.odleglosc, '. Prowadzi następująco:')
         print(droga)
 
 
@@ -137,4 +145,6 @@ class Dijkstra:
 
 if __name__ == '__main__':
     algorytm = Dijkstra()
-    algorytm.run()
+    start = algorytm.naszgraf.B
+    koniec = algorytm.naszgraf.G
+    algorytm.run(start, koniec)
